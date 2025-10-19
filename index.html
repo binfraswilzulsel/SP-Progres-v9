@@ -831,6 +831,16 @@
                         <a href="${kegiatan.link_pdf}" target="_blank" class="pdf-button">LIHAT LAPORAN PDF</a>
                     </div>
                 </div>
+
+                <div class="kartu-opd">
+    <h2>Nama OPD</h2>
+    <p>Detail Data...</p>
+</div>
+
+<div class="kartu-opd">
+    <h2>Nama OPD Lain</h2>
+    <p>Detail Data...</p>
+</div>
             `;
         }
 
@@ -1075,22 +1085,33 @@
         });
 
 
+// Fungsi ini memutar audio (tetap sama)
 function playTapSound() {
-    // 1. Dapatkan elemen audio
     const audio = document.getElementById('tapAudio');
-    
-    // 2. Jika audio ditemukan
     if (audio) {
-        // Reset waktu putar ke awal (penting agar suara bisa diputar berulang kali dengan cepat)
         audio.currentTime = 0;
-        
-        // Coba putar suara
         audio.play().catch(error => {
-            // Handle error jika browser melarang pemutaran (biasanya karena belum ada interaksi user)
             console.log("Gagal memutar suara:", error);
         });
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Dapatkan SEMUA elemen kartu dengan class 'kartu-opd'
+    // Ganti '.kartu-opd' jika class kartu Anda berbeda
+    const cardElements = document.querySelectorAll('.kartu-opd');
+
+    // 2. Terapkan listener pada setiap elemen kartu
+    cardElements.forEach(element => {
+        // Untuk interaksi desktop (klik)
+        element.addEventListener('click', playTapSound);
+        
+        // Untuk interaksi sentuh HP (tap)
+        element.addEventListener('touchstart', playTapSound); 
+    });
+    
+    // ... Sisa kode JavaScript Anda (logika filter, dll.) ...
+});
 
 // 3. Tambahkan event listener ke body saat DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', () => {
