@@ -522,10 +522,29 @@
     <audio id="click-sound" src="tap_sound.mp3" preload="auto"></audio>
     
     <script>
+              let isTouch = false;
 
-               // Fungsi untuk memutar suara saat layar diketuk
-        document.addEventListener("click", function() {
-            document.getElementById("click-sound").play();
+        // Fungsi untuk memutar suara saat layar diketuk
+        document.addEventListener("touchstart", function(event) {
+            // Cek jika layar tidak sedang digulir dan belum ada pemutaran suara
+            if (!isTouch) {
+                document.getElementById("click-sound").play();
+                isTouch = true;  // Tandai bahwa suara sudah diputar
+                setTimeout(function() {
+                    isTouch = false;  // Reset setelah 300ms, memastikan suara tidak diputar berulang
+                }, 300);  // Timeout 300ms agar suara tidak diputar lagi dalam waktu singkat
+            }
+        });
+
+        // Untuk menangani klik di desktop
+        document.addEventListener("click", function(event) {
+            if (!isTouch) {
+                document.getElementById("click-sound").play();
+                isTouch = true;
+                setTimeout(function() {
+                    isTouch = false;
+                }, 300);  // Timeout 300ms agar suara tidak diputar berulang
+            }
         });
             
         
@@ -1146,4 +1165,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
 </body>
 </html>
+
 
