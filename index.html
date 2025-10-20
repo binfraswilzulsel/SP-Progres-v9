@@ -518,7 +518,17 @@
     <div class="container" id="opd-container">
     </div>
 
+        <!-- Elemen audio untuk suara -->
+    <audio id="click-sound" src="tap_sound.mp3" preload="auto"></audio>
+    
     <script>
+
+               // Fungsi untuk memutar suara saat layar diketuk
+        document.addEventListener("click", function() {
+            document.getElementById("click-sound").play();
+        });
+            
+        
         // --- DATA JAVASCRIPT DARI TABEL ANDA (TIDAK BERUBAH) ---
         const progressData = [
             {
@@ -1136,3 +1146,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
 </body>
 </html>
+
