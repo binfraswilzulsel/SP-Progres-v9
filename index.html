@@ -522,42 +522,42 @@
     <audio id="click-sound" src="tap_sound.mp3" preload="auto"></audio>
     
     <script>
-        // Fungsi untuk memutar suara hanya untuk elemen interaktif
-        function playSound(event) {
-            // Daftar elemen yang akan memicu suara
-            const interactiveElements = [
-                '.filter-toggle-btn',
-                '.filter-btn',
-                '.card-header',
-                '.kegiatan-card',
-                '.filtered-kegiatan-card',
-                '.pdf-button'
-            ];
+      let isTouch = false;  // Untuk mendeteksi apakah suara sudah diputar
+        let isScrolling = false;  // Menandai apakah kita sedang menggulir layar
 
-            // Cek apakah elemen yang diklik cocok dengan selector yang kita inginkan
-            const isInteractive = interactiveElements.some(selector => 
-                event.target.closest(selector)
-            );
-
-            // Putar suara hanya jika elemen adalah elemen interaktif
-            if (isInteractive) {
-                const audio = document.getElementById("click-sound");
-                audio.currentTime = 0;
-                audio.play().catch(error => {
-                    console.log("Gagal memutar suara:", error);
-                });
-            }
-        }
-
-        // Event listener untuk klik mouse
-        document.addEventListener("click", playSound);
-
-        // Event listener untuk sentuhan di perangkat mobile
+        // Fungsi untuk memutar suara saat layar diketuk
         document.addEventListener("touchstart", function(event) {
-            // Mencegah event click juga terpicu pada perangkat mobile
-            event.preventDefault();
-            playSound(event);
-        }, { passive: false });       
+            if (!isTouch && !isScrolling) {  // Cek jika belum diputar dan tidak sedang scroll
+                document.getElementById("click-sound").play();
+                isTouch = true;  // Tandai bahwa suara sudah diputar
+                setTimeout(function() {
+                    isTouch = false;  // Reset isTouch setelah 300ms
+                }, 300);  // Timeout 300ms
+            }
+        });
+
+        // Fungsi untuk mendeteksi scrolling
+        document.addEventListener("touchmove", function(event) {
+            isScrolling = true;  // Jika ada scroll, set isScrolling true
+        });
+
+        // Reset isScrolling setelah 300ms tidak ada gerakan
+        document.addEventListener("touchend", function(event) {
+            setTimeout(function() {
+                isScrolling = false;  // Reset isScrolling setelah 300ms
+            }, 300); 
+        });
+
+        // Menangani klik di desktop
+        document.addEventListener("click", function(event) {
+            if (!isTouch) {  // Cek apakah suara belum diputar
+                document.getElementById("click-sound").play();
+                isTouch = true;
+                setTimeout(function() {
+                    isTouch = false;
+                }, 300);  // Timeout 300ms
+            }
+        });       
             
         
         // --- DATA JAVASCRIPT DARI TABEL ANDA (TIDAK BERUBAH) ---
